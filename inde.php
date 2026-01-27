@@ -15,19 +15,22 @@
 
 // // connection using PDO
 
-$host="localhost";
-$username="root";
-$password=null;
-$database="first";
+// $host="localhost";
+// $username="root";
+// $password=null;
+// $database="first";
 
-try {
-    $connect = new PDO(
-        "mysql:host=$host;dbname=$database",$username,$password
-    );
-    $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "database connected";
-} catch (PDOException$err) {
-echo "connection failed" .$err ->getMessage();
-}
-$res = $connect=>query("show tables")
+// try {
+//     $connect = new PDO(
+//         "mysql:host=$host;dbname=$database",$username,$password
+//     );
+//     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//     echo "database connected";
+// } catch (PDOException$err) {
+// echo "connection failed" .$err ->getMessage();
+// }
+// $res = $connect->query("show tables");
+// while($row=$res->fetch(PDO::FETCH_NUM)){
+//     print_r($row);
+// }
 ?>
