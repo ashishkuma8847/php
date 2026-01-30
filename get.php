@@ -1,6 +1,7 @@
 <?php
 include("./config.php");
-$getusers=$connect->prepare("SELECT * FROM test");
+$getusers=$connect->prepare("SELECT * FROM test"); 
+// agar yha par * ki jgah koi spesafic cheez mangi jaye to wo only hi mila jayegi jese id email etc.
 $getusers->execute();
 $users=$getusers->fetchAll(PDO::FETCH_ASSOC);
 foreach($users as $user){
