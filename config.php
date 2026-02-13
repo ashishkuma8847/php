@@ -1,16 +1,22 @@
 <?php
-$host="localhost";
-$username="root";
-$password=null;
-$database="first";
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "first";
 
 try {
     $connect = new PDO(
-        "mysql:host=$host;dbname=$database",$username,$password
+        "mysql:host=$host;dbname=$database;charset=utf8",
+        $username,
+        $password
     );
+
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "database connected";
-} catch (PDOException$err) {
-echo "connection failed" .$err ->getMessage();
+    $connect->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+    echo "✅ Database Connected Successfully";
+
+} catch (PDOException $err) {
+    echo "❌ Connection Failed: " . $err->getMessage();
 }
 ?>

@@ -1,36 +1,68 @@
 <?php
-// // connection using mysqli
-// $host ="localhost";
-// $username="root";
-// $password=null;
-// $database="first";
-// $connect = new mysqli( $host,$username,$password,$database);
-// if($connect->connect_error){
-//     return ( "data base not connected".$connect->connect_error);
-// }else{
-//     echo "connected with database";
-// };
-// $res = $connect->query("show tables")->fetch_all();
-// print_r($res)
+header("Content-Type: application/json");
+include("config.php");
 
-// // connection using PDO
+$method = $_SERVER['REQUEST_METHOD'];
 
-// $host="localhost";
-// $username="root";
-// $password=null;
-// $database="first";
+switch ($method) {
 
-// try {
-//     $connect = new PDO(
-//         "mysql:host=$host;dbname=$database",$username,$password
-//     );
-//     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//     echo "database connected";
-// } catch (PDOException$err) {
-// echo "connection failed" .$err ->getMessage();
-// }
-// $res = $connect->query("show tables");
-// while($row=$res->fetch(PDO::FETCH_NUM)){
-//     print_r($row);
-// }
+    case "GET":
+        $stmt = $connect->prepare("SELECT id,name,email FROM test");
+        $stmt->execute();
+        echo json_encode($stmt->fetchAll());
+        break;
+
+
+    case "POST":
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $name = $data['name'];
+        $email = $data['email'];
+        $password = password_hash($data['password'], PASSWORD_DEFAULT);
+
+        $stmt = $connect->prepare(
+            "INSERT INTO test (name,email,password)
+             VALUES (:name,:email,:password)"
+        );
+
+        $stmt->execute([
+            ":name" => $name,
+            ":email" => $email,
+            ":password" => $password
+        ]);
+
+        echo json_encode(["message" => "User Created"]);
+        break;
+
+
+    case "PUT":
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $stmt = $connect->prepare(
+            "UPDATE test SET name=:name WHERE id=:id"
+        );
+
+        $stmt->execute([
+            ":name" => $data['name'],
+            ":id" => $data['id']
+        ]);
+
+        echo json_encode(["message" => "User Updated"]);
+        break;
+
+
+    case "DELETE":
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $stmt = $connect->prepare(
+            "DELETE FROM test WHERE id=:id"
+        );
+
+        $stmt->execute([
+            ":id" => $data['id']
+        ]);
+
+        echo json_encode(["message" => "User Deleted"]);
+        break;
+}
 ?>
